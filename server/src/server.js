@@ -1,14 +1,16 @@
 const express = require("express");
-const connect = require('./config/database');
+const connect = require("./config/database");
 const dotenv = require("dotenv");
-const userModel = require('./models/userModel');
-const UserRepository = require('./repository/userRepository');
+const userModel = require("./models/userModel");
+const UserRepository = require("./repository/userRepository");
+const cors = require("cors");
 
 dotenv.config();
 const PORT = process.env.PORT;
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 app.get("/", (req, res) => {
     res.send("app Running");
@@ -35,13 +37,13 @@ app.listen(PORT || 8000, async () => {
         try {
             const userAdded = await userRepo.create({
                 name: name,
-                userEmail: userEmail
+                userEmail: userEmail,
             });
             res.status(201).json(userAdded);
         } catch (error) {
-            res.status(400).json({ error: error.message })
+            res.status(400).json({ error: error.message });
         }
-    })
+    });
 
     //  console.log(User);
 });
